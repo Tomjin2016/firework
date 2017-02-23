@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<h2 id="showTime"></h2>
+		是否切换小时制？
+		<input type="radio" name="timeClock" id="show24" value=""checked="checked"/><label for="show24">24时制</label>
+		<input type="radio" name="timeClock" id="show12" value="""/><label for="show12">12时制</label>
+		<script type="text/javascript">
+			window.addEventListener("load",initDate,false);
+			function initDate(){
+				getCurrentDatetime();
+				function getCurrentDatetime(){
+					//显示具体时间
+					var pad = function(n){
+						return n<10?'0'+n :n;
+					}
+					var time=new Date();
+					var nowTime=time.getFullYear()+"-"+pad(time.getMonth()+1)+"-"+pad(time.getDate());
+					var nowtime=showTheHours(time.getHours())+":"+pad(time.getMinutes())+":"+pad(time.getSeconds());
+					var NowTime=nowTime+" "+nowtime+showAmPm()+" "+getWeek();
+					setTimeout(getCurrentDatetime,1000);
+					document.getElementById("showTime").innerHTML=NowTime;
+					//判断星期几;
+					function getWeek(nowTime){ 
+						if(nowTime == null || typeof nowTime =="undefined"){
+							var date = new Date; 
+						}else{ 
+							var dateArray = nowTime.split("-"); 
+							var date = new Date(dateArray[0], parseInt(dateArray[1] - 1), dateArray[2]); 
+						} 
+						var weeks = new Array("日", "一", "二", "三", "四", "五", "六");
+						return "星期" + weeks[date.getDay()]; 
+						return "星期" + "日一二三四五六".charAt(date.getDay);
+					}	
+					//24与12时切换
+					function showTheHours(theHour){
+						if (show24Hour() || (theHour > 0 &&theHour <13)){
+							return theHour;
+						}
+						if(theHour == 0){
+							return 12;
+						}
+						return theHour-12;
+					}
+					function show24Hour(){
+						return (document.getElementById("show24").checked);
+					}
+					function showAmPm(){
+						if (show24Hour()){
+							return "";
+						}
+						if (time.getHours() < 12){
+							return "AM";
+						}
+						return "PM";
+					}
+					
+				}	
+			}
+				
+		</script>
+	</body>
+</html>
